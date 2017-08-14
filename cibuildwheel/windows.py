@@ -22,7 +22,7 @@ def build(project_dir, package_name, output_dir, test_command, test_requires, be
         # print the command executing for the logs
         print('+ ' + ' '.join(args))
         args = ['cmd', '/E:ON', '/V:ON', '/C', run_with_env] + args
-        return subprocess.check_output(' '.join(args), env=env, cwd=cwd)
+        return subprocess.check_call(' '.join(args), env=env, cwd=cwd)
 
     PythonConfiguration = namedtuple('PythonConfiguration', ['version', 'arch', 'identifier', 'path'])
     python_configurations = [

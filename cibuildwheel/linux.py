@@ -78,7 +78,7 @@ def build(project_dir, package_name, output_dir, test_command, test_requires, be
                 else
                     auditwheel show "$built_wheel"
                     $PYBIN/python -m zipfile -e "$built_wheel" /tmp/extracted_wheel
-                    readelf -s /tmp/extracted_wheel/rapidjson.cpython*.so | grep GLIBC_2.14
+                    readelf -s /tmp/extracted_wheel/rapidjson.cpython*.so | grep GLIBC_2.14 || true
                     ls -l /lib64/libc*
                     auditwheel repair "$built_wheel" -w /tmp/delocated_wheel
                 fi

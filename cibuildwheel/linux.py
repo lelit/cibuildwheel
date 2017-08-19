@@ -75,6 +75,8 @@ def build(project_dir, package_name, output_dir, test_command, test_requires, be
                     mv "$built_wheel" /tmp/delocated_wheel
                 else
                     auditwheel show "$built_wheel"
+                    readelf -s python_rapidjson*.so | grep GLIBC_2.14
+                    ls -l /lib64/libc*
                     auditwheel repair "$built_wheel" -w /tmp/delocated_wheel
                 fi
                 delocated_wheel=(/tmp/delocated_wheel/*.whl)

@@ -56,8 +56,10 @@ def build(project_dir, package_name, output_dir, test_command, test_requires, be
                 # Setup
                 rm -rf /tmp/built_wheel
                 rm -rf /tmp/delocated_wheel
+                rm -rf /tmp/extracted_wheel
                 mkdir /tmp/built_wheel
                 mkdir /tmp/delocated_wheel
+                mkdir /tmp/extracted_wheel
 
                 if [ ! -z {before_build} ]; then
                     PATH=$PYBIN:$PATH sh -c {before_build}
@@ -75,7 +77,8 @@ def build(project_dir, package_name, output_dir, test_command, test_requires, be
                     mv "$built_wheel" /tmp/delocated_wheel
                 else
                     auditwheel show "$built_wheel"
-                    readelf -s python_rapidjson*.so | grep GLIBC_2.14
+                    $PYBIN/python -m zip -e "$built_wheel" /tmp/extracted_wheel
+                    readelf -s /tmp/extracted_wheel/python_rapidjson*.so | grep GLIBC_2.14
                     ls -l /lib64/libc*
                     auditwheel repair "$built_wheel" -w /tmp/delocated_wheel
                 fi
